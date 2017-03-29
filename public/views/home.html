@@ -1,0 +1,337 @@
+<div class="view_container" id="first_div" ng-controller="HomeController as hc">
+ <!-- Tool Bar -->
+ <md-toolbar layout="row">
+    <md-button aria-label="Toolbar Icon">
+        <md-icon md-svg-src="../images/drawing1.svg"  class="menu_icon"></md-icon> 
+    </md-button>
+    <h3 ng-click="reloadPage();" class="mouse-focus-class">Bloggie.in</h3>
+
+
+    <form ng-submit="$event.preventDefault()" flex class="autocomplete">
+     <md-autocomplete
+          md-selected-item="selectedItem"
+          md-search-text-change="searchTextChange(searchText)"
+          md-search-text="searchText"
+          md-selected-item-change="selectedItemChange(item)"
+          md-items="item in blogs | filter : searchText"
+          md-item-text="item.blog_title"
+          md-min-length="0"
+          placeholder="What is your favorite Blog?"
+          md-menu-class="autocomplete-custom-template">
+        <md-item-template>
+           <span class="item-title">
+            <md-icon md-svg-icon="{{item.picture_path}}" class="md-avatar-icon"></md-icon>
+            <span md-highlight-text="searchText" md-highlight-flags="^i"> {{item.first_name + " "+ item.last_name }} </span>
+          </span>
+          <span class="item-metadata">
+            <span class="item-metastat">
+              <strong>{{item.blog_title}}</strong> 
+            </span>
+          </span>
+        </md-item-template>
+        <md-not-found>
+          No states matching "{{searchText}}" were found.
+          <a ng-click="newState(searchText)">Create a new one!</a>
+        </md-not-found>
+      </md-autocomplete>
+     </form>
+
+
+
+    <md-button aria-label="Signup Button" ng-click="open_template($event)" id="b1">
+         <md-icon md-svg-src="../images/signin_singup.svg"  class="menu_icon"></md-icon> 
+         <md-tooltip md-visible="false" md-direction="bottom">Sign IN/ Sign UP</md-tooltip>
+    </md-button>
+ </md-toolbar>
+
+  <!-- Main Content Panel -->
+  <div class="container" layout="row" flex>
+
+         <md-sidenav md-is-locked-open="true" class="md-whiteframe-4dp">
+             
+            <md-list>
+               <md-list-item ng-repeat="c1 in categories">
+                 <md-button ng-click="selectCategory(c1)">
+                    <md-icon md-svg-src="{{c1.image}}" class="avatar"></md-icon>
+                     {{c1.blog_category}}
+                 </md-button>
+               </md-list-item>
+             </md-list>
+            
+         </md-sidenav>
+      
+      
+         <md-content id="content" flex>
+      
+                <md-card layout="row" ng-repeat="b1 in blogs | filter : searchText" ng-click="blogDescription(b1, $event);">
+                    
+                    
+                    <md-card flex="60">
+                    <md-card-header>
+                      <md-card-avatar>
+                         <md-icon md-svg-src="{{b1.picture_path}}" class="md-avatar-icon"></md-icon>
+                         <!--<img src="../images/avatar-1.svg" class="avatar">-->
+                      </md-card-avatar>
+                      <md-card-header-text>
+                        <span class="md-title">{{b1.first_name+" "+b1.last_name}}</span>
+                        <span class="md-subhead">{{b1.blog_creation_time}}</span>
+                      </md-card-header-text>
+                    </md-card-header>
+                   
+                    <md-card-title>
+                     
+                      <md-card-title-text>
+                        <span class="md-headline">{{b1.blog_title}}</span>
+                      </md-card-title-text>
+                         
+                    </md-card-title>
+                    <md-card-content>
+                      <p>{{b1.blog_small_des}}</p>
+                    </md-card-content>
+                   </md-card>
+                    
+                    <md-card flex="40">
+                      <img ng-src="{{b1.blog_image1}}">
+                    </md-card>
+                    
+               </md-card>
+
+         </md-content>
+
+        <!-- Toast Template(mdToast)-->
+        <script type="text/ng-template" id="toast-template.html">
+             <md-toast>
+              <span class="md-toast-text" flex>No Data Exists in this category</span>
+              <md-button ng-click="closeToast()">
+                Close
+              </md-button>
+            </md-toast>
+       </script>
+      
+       
+      <!-- Signin/SignUp Template(mdDialog)-->
+      <script type="text/ng-template" id="signin--signup-template.html">
+          <md-dialog aria-label="Mango (Fruit)" layout="column" class="relative" role="main" flex="60" ng-controller="SigninDialogController"> 
+               
+              
+              <md-toolbar ng-show="!showSearch">
+                    <div class="md-toolbar-tools">
+                      <h3>
+                        Blogger
+                      </h3>
+                      
+                    </div>
+                    <md-tabs md-center-tabs="true" md-stretch-tabs class="md-primary" md-selected="data.selectedIndex">
+                      <md-tab id="tab1" aria-controls="tab1-content" >
+                        Sign In
+                      </md-tab>
+                      <md-tab id="tab2" aria-controls="tab2-content">
+                        Sign Up
+                      </md-tab>
+                    </md-tabs>
+              </md-toolbar>
+             
+              <md-content class="md-padding" style="background-color: #f5f5f5"> 
+                  <ng-switch on="data.selectedIndex" class="tabpanel-container"> 
+                  <div role="tabpanel"
+                       id="tab1-content"
+                       aria-labelledby="tab1"
+                       ng-switch-when="0"
+                       md-swipe-left="next()"
+                       md-swipe-right="previous()"
+                       layout="row">
+                      
+                        <form name="signInForm" layout="column" flex="45" style="margin-right:8%;"> 
+                              <div layout layout-sm="column"> 
+                                   <md-input-container flex> 
+                                        <label>Username</label> 
+                                        <input type="text" name="userUseranme" ng-model="user.username" required> 
+                                   </md-input-container> 
+                              </div> 
+                              <md-input-container flex> 
+                                 <label>Password</label> 
+                                 <input type="password" name="userPassword" ng-model="user.password" required> 
+                              </md-input-container> 
+                              <span id="invalid_credentials">*Invalid Credentials*</span>
+                              <div layout layout-sm="column"> 
+                                 <md-input-container flex> 
+                                      <md-button ng-click="signin(user);" class="md-raised md-primary"> Log In</md-button> 
+                                 </md-input-container> 
+                              </div> 
+                         </form> 
+                       <md-divider vertical></md-divider>
+                        
+                      <div style="background-color:#f5f5f5; padding: 5%;" flex="55" layout="column" class="md-padding">
+                          <md-button ng-click="signinWithGmail();"    class="md-raised md-primary"> Log In With Gmail    </md-button> 
+                          <md-button ng-click="signinWithfacebook();" class="md-raised md-primary"> Log In With Facebook </md-button> 
+                      </div>
+                       
+                   </div>
+                   <div role="tabpanel"
+                       id="tab2-content"
+                       aria-labelledby="tab2"
+                       ng-switch-when="1"
+                       md-swipe-left="next()"
+                       md-swipe-right="previous()" 
+                       layout="row">
+                          <form name="userForm" layout="row"  flex> 
+                              <div layout="column" flex="45" style="margin-right:8%;">
+                                  <div layout="row" flex> 
+                                   <md-input-container flex> 
+                                        <label>Firstname</label> 
+                                        <input type="text" name="userFirstname" ng-model="user.firstname" required> 
+                                   </md-input-container> 
+                                   <md-input-container flex> 
+                                        <label>Lastname</label> 
+                                        <input type="text" name="userLastname" ng-model="user.lastname" required> 
+                                   </md-input-container> 
+                                  </div> 
+                                  
+                                  <md-datepicker style="background-color: #f5f5f5" md-placeholder="Date of Birth" md-min-date="minDate" md-max-date="maxDate" flex name="userDob" ng-model="user.dob" required></md-datepicker>
+                                     
+                                  
+                                     <div flex>
+                                     <md-radio-group layout="row" name="userGender" ng-model="user.gender" required>
+                                      <label flex>Gender : </label>      
+                                      <md-radio-button value="male" class="md-primary" flex>Male</md-radio-button>
+                                      <md-radio-button value="female" flex> Female</md-radio-button>
+                                    </md-radio-group>
+                                   </div>
+                              </div>
+                              
+                              <md-divider vertical></md-divider>
+                        
+                              <div style="background-color:#f5f5f5; padding-left: 5%; padding-right:5%;" flex="55" layout="column">
+                                  <md-input-container flex> 
+                                        <label>Username</label> 
+                                        <input type="email" name="userUsername" ng-model="user.username" required> 
+                                   </md-input-container> 
+                                  <div layout="row" flex>
+                                      <md-input-container flex> 
+                                            <label>Password</label> 
+                                            <input type="password" name="userPassword" ng-model="user.password" required> 
+                                       </md-input-container> 
+                                       <md-input-container flex> 
+                                            <label>Confirm Password</label> 
+                                            <input type="password" name="userConfirmPassword" ng-model="confirmPassword" required> 
+                                       </md-input-container>
+                                       
+                                  </div>
+                                  <md-input-container flex> 
+                                        <md-button ng-click="signup(user);" class="md-raised md-primary"> Sign Up</md-button> 
+                                  </md-input-container>
+                                   
+                              </div>
+                              
+                         </form> 
+                       
+                       
+                   </div>    
+                  </ng-switch>
+                   <!--form elements-->
+              </md-content> 
+              <div class="md-dialog-actions" layout="row"> 
+                  <span flex></span> 
+                  <md-button ng-click="cancelDialogBox();"> Cancel </md-button>
+              </div>
+             
+          </md-dialog>
+      </script>
+      
+      
+     <!-- Blog Description Dialog Box-->
+     <script type="text/ng-template" id="dialog.blog.description.html">
+  
+      <md-dialog aria-label="title" ng-controller="BlogsController as bc" style="max-width: 90%; max-height: 90%; width: 90%; height: 90%;">
+        <form>
+          <md-toolbar>
+            <div class="md-toolbar-tools">
+              <h2>{{ blog_title }}</h2>
+              <span flex></span>
+              <md-button class="md-icon-button" ng-click="cancel()">
+                <md-icon md-svg-src="" aria-label="Close dialog"></md-icon>
+              </md-button>
+            </div>
+          </md-toolbar>
+
+          <md-dialog-content>
+            <div class="md-dialog-content">
+              <md-card flex="100">
+                    <md-card-header>
+                      <md-card-avatar>
+                         <md-icon md-svg-src="{{blogger_image}}" class="md-avatar-icon"></md-icon>
+                      </md-card-avatar>
+                      <md-card-header-text>
+                        <span class="md-title">{{first_name+" "+last_name}}</span>
+                        <span class="md-subhead">{{blog_creation_time}}</span>
+                      </md-card-header-text>
+                    </md-card-header>
+               </md-card>  
+
+               <md-card flex="100">
+                    <md-card-header>
+                      <md-card-header-text>
+                        <span class="md-title">{{blog_small_desc}}</span>
+                      </md-card-header-text>
+                    </md-card-header>
+               </md-card>  
+
+               <md-card flex="`100">
+                      <img ng-src="{{blog_image1}}">
+               </md-card>
+
+               <md-card flex="`100">
+                     <p>
+                     {{blog_full_description}}
+                    </p>
+               </md-card>
+
+
+              
+            </div>
+          </md-dialog-content>
+
+          <md-dialog-actions layout="row">
+            <md-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" md-autofocus>
+              More on Wikipedia
+            </md-button>
+            <span flex></span>
+            <md-button ng-click="answer('not useful')" style="background-color: #334455; color: white">
+             Not Useful
+            </md-button>
+            <md-button ng-click="cancel()" style="margin-right:20px;">
+              Cancel
+            </md-button>
+          </md-dialog-actions>
+        </form>
+      </md-dialog>
+ 
+  </script>
+  
+      
+      
+     <!-- TO show the Notification Basic -->
+     <toaster-container toaster-options="{'time-out': 3000,'position-class': 'toast-top-right'}"></toaster-container>
+      
+      
+      
+      
+  </div>     
+
+</div>
+
+
+<div class="view_container_2" id="sec_div">
+
+  <md-toolbar layout="row">
+    <md-button aria-label="Toolbar Icon">
+        <md-icon md-svg-src="../images/drawing1.svg"  class="menu_icon"></md-icon> 
+    </md-button>
+    <h3>Blogger</h3>
+    <md-button  aria-label="Signup Button" ng-click="open_template()">
+         <md-icon md-svg-src="../images/close.svg"  class="menu_icon"></md-icon> 
+    </md-button>
+ </md-toolbar>
+
+</div>
+

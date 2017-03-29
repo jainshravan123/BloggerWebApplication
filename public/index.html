@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <link rel="stylesheet" href="../lib/angular-material/angular-material.min.css"> 
+      <link rel="stylesheet" href="../styles/Home.css"> 
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+      <link rel="stylesheet" href="../lib/toaster/toaster.css">
+      <link rel="stylesheet" href="../lib/sweetalert/sweetalert.css">
+ <!-- <link rel="stylesheet" href="../styles/dashboard_css.css">-->
+    </head>
+   <body ng-app="BloggerApp" layout="column">
+       
+       
+        
+            <div class="view_container" ui-view></div>
+      
+       
+       
+    <script src="../lib/angular/angular.min.js"></script>
+    <script src="../lib/angular-ui-router/release/angular-ui-router.min.js"></script>  
+    <script src="../lib/angular-animate/angular-animate.min.js"></script>
+    <script src="../lib/angular-aria/angular-aria.min.js"></script>   
+    <script src="../lib/angular-material/angular-material.min.js"></script>
+    <script src="../lib/jquery/Jquery_lib.js"></script>   
+    <script src="//cdn.jsdelivr.net/angular-material-icons/0.4.0/angular-material-icons.min.js"></script>   
+    <script src="../lib/ngProgress/ngprogress.min.js"></script>
+    <script src="../lib/toaster/toaster.js"></script>   
+    <script src="../lib/sweetalert/sweetalert.min.js"></script>
+       
+    <!-- Web Services -->
+    <script src="scripts/web_services_config.js"></script>   
+
+     <!-- Module -->  
+    <script src="scripts/BloggerModule.js"></script>
+
+    <!-- Controllers -->
+    <script src="scripts/controller/HomeController.js"></script> 
+    <script src="scripts/controller/ToastController.js"></script>
+    <script src="scripts/controller/DashboardController.js"></script>  
+    <script src="scripts/controller/SigninDialogController.js"></script> 
+    <script src="scripts/controller/BlogsController.js"></script>
+       
+    <!-- Service -->   
+    <script src="scripts/service/UserService.js"></script>   
+    <script src="scripts/service/BlogsService.js"></script>
+
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="498401044061-n15gjouitj73r7hf6jbrqk8505oltcft.apps.googleusercontent.com">
+        
+   </body>
+</html>
